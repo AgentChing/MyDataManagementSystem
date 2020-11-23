@@ -5,24 +5,25 @@ for example if we have a netfilx seriez the hierarchy will look like:
 		
 1.		List
 		   |-Object(permanent index)
-							|- Name
-							|- Date of Release
-							|- Date of Completion(if any)
-							|- Rating
-							|- Genre
-							|- Status (Ongoing, Completed, Not yet Aired)
-							|- Summary
-							|- Overview(if required)
-							|- Characters
-									   |- corresponding Actors
-									   |- rating
-									   |- (any more info you want to write)
-							|- Actors
-									|-corresponding character
-									|- (whatever user wants to add)
+				|- Name
+				|- Date of Release
+				|- Date of Completion(if any)
+				|- Rating
+				|- Genre
+				|- Status (Ongoing, Completed, Not yet Aired)
+				|- Summary
+				|- Overview(if required)
+				|- Characters
+						|- corresponding Actors
+						|- rating
+						|- (any more info you want to write)
+				|- Actors
+					|-corresponding character
+					|- (whatever user wants to add)
 
 
-2.     Genre will have its own database too, so that when user adds a genre to the series, the name of the series will automaticaly get added to genre list.
+2.     Genre will have its own database too, so that when user adds a genre to the series, the name of the series will
+	   automaticaly get added to genre list.
 	   like Genre will look like this:
 
 			Genre
@@ -34,5 +35,5 @@ for example if we have a netfilx seriez the hierarchy will look like:
 				|-(user can add any genre name they want)
 
 
-3.     we will also add sorting algorythms and twerk the structure a little to make the process more storage and time efficient.
+3.     We will also add sorting algorythms and twerk the structure a little to make the process more storage and time efficient.
 							
