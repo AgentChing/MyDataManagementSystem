@@ -6,18 +6,17 @@ int menu();
 
 void main()
 {
-	int *choice;
+	int choice;
 	do
 	{
 		choice = menu();
-	} while (*choice != 0);
+	} while (choice != 0);
 
 }
 
 int menu()
 {
 	int choice;
-
 
 	printf("\n---------------MENU-----------------");
 	printf("\nTo ADD New Item enter:   1");
