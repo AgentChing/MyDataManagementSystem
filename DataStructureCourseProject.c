@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-void menu(int);
+void menu(int*);
 
 void main()
 {
@@ -22,13 +22,13 @@ void menu(int *choice)
 	printf("\nTo SEARCH an Item enter: 2");
 	printf("\nTo DELETE an Item enter: 3");
 	printf("\nTo Exit : Enter  0\n");
-	printf("\n|\n Your responce : "); fgetc(c);
+	printf("\n|\n Your responce : "); scanf("%d",&c);
 	switch (c)
 	{
-	case '1': printf("ADD"); *choice = 1; break;
-	case '2': printf("Search"); *choice = 2; break;
-	case '3': printf("Delete");*choice = 3; break;
-	case '0':printf("Terminate"); *choice = 0; break;
+	case 1: printf("ADD"); *choice = 1; break;
+	case 2: printf("Search"); *choice = 2; break;
+	case 3: printf("Delete");*choice = 3; break;
+	case 0:printf("Terminate"); *choice = 0; break;
 	}
 	return;
 }
