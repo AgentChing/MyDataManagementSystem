@@ -4,6 +4,10 @@
 
 int menu();
 void openfile();
+typedef struct Olist {
+	struct Object *olist;
+	int olist_count;
+};
 
 typedef struct Object
 {
@@ -29,16 +33,12 @@ typedef struct Cast {
 }Cast;
 
 
-
-
-
-
 void main()
 {
 	openfile();
 	int choice;
 	Object arr[1000];
-	int count=0;
+	int count = 0;
 
 	do
 	{
@@ -72,14 +72,14 @@ int menu()
 
 
 
- void openfile()
- {
- 	FILE *f; 	char name1[50], name2[50];
+void openfile()
+{
+	FILE *f; 	char name1[50], name2[50];
 	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "r");
- 	while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF) {
+	while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF) {
 		printf("\n%s", name1);
 		printf("\n%s", name2);
- 	}
- 	fclose(f);
+	}
+	fclose(f);
 
 }
