@@ -12,6 +12,7 @@ typedef struct Object
 	struct Character *character; int charcount;
 	struct Cast *cast; int castcount;
 	int rating;
+	int year_of_realse;
 	char discription[200];
 }Object;
 
@@ -26,14 +27,61 @@ typedef struct Cast {
 	char name[30];
 	char voiced[30];
 }Cast;
+void create_new_database(Object *arr , int *count)
+    //  char oname[70];
+	// char genre[10][15]; int genrecount;
+	// struct Character *character; int charcount;
+	// struct Cast *cast; int castcount;
+	// int rating;
+	// int year_of_realse;
+	// char discription[200];
+{
+	printf("Enter the movie name: ");
+	scanf("%s",&arr[*count].oname);
+	printf("Enter the genre of the movie and enter 0 when done! ");
+	char a[][15]={'\0'};
+	while(a != '0')
+	{
+		scanf("%s",&a);
+		if(a=='0')
+		break;
+
+		arr.[*count].genre[][15]= a[][15];
+
+
+
+	}
+
+	// scanf("%s",&arr[*count].oname);
+	// printf("Enter the movie name: ");
+	// scanf("%s",&arr[*count].oname);
+	// printf("Enter the movie name: ");
+	// scanf("%s",&arr[*count].oname);
+	// printf("Enter the movie name: ");
+	// scanf("%s",&arr[*count].oname);
+	// printf("Enter the movie name: ");
+	// scanf("%s",&arr[*count].oname);
+
+
+
+
+}
 
 void main()
 {
-	openfile();
+	//openfile();
 	int choice;
+	Object arr[1000];
+	int count=0;
+
 	do
 	{
 		choice = menu();
+		if(choice == 1)
+		{
+		create_new_dataBase(arr,&count);
+
+		}
 	} while (choice != 0);
 }
 
@@ -62,15 +110,15 @@ int menu()
 
 
 
-void openfile()
-{
-	FILE *f;
-	char name1[50], name2[50];
-	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "r");
-	while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF) {
-		printf("\n%s", name1);
-		printf("\n%s", name2);
-	}
-	fclose(f);
+// void openfile()
+// {
+// 	FILE *f;
+// 	char name1[50], name2[50];
+// 	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "r");
+// 	while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF) {
+// 		printf("\n%s", name1);
+// 		printf("\n%s", name2);
+// 	}
+// 	fclose(f);
 
-}
+// }
