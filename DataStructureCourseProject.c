@@ -3,7 +3,10 @@
 #include<string.h>
 
 int menu();
-void openfile();
+FILE * openfile();
+void addObject();
+void initiate_Olist();
+
 typedef struct Olist {
 	struct Object *olist;
 	int olist_count;
@@ -35,21 +38,22 @@ typedef struct Cast {
 
 void main()
 {
-	openfile();
+	FILE *f;
+	f = openfile();
 	int choice;
 	Object arr[1000];
 	int count = 0;
 
 	do
 	{
-		choice = menu();
+		choice = menu(f);
 
 	} while (choice != 0);
 }
 
 
 
-int menu()
+int menu(FILE *f)
 {
 	int choice;
 
@@ -61,25 +65,99 @@ int menu()
 	printf("\n|\n Your response : "); scanf("%d", &choice);
 	switch (choice)
 	{
-	case 1: printf("ADD"); choice = 1; break;
+	case 1: printf("ADD"); addObject(f); choice = 1; break;
 	case 2: printf("Search"); choice = 2; break;
 	case 3: printf("Delete"); choice = 3; break;
 	case 0:printf("Terminate"); choice = 0; break;
 	}
+	fflush(stdin);
 	return choice;
 
 }
 
 
 
-void openfile()
+FILE * openfile()
 {
 	FILE *f; 	char name1[50], name2[50];
 	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "r");
-	while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF) {
-		printf("\n%s", name1);
-		printf("\n%s", name2);
-	}
-	fclose(f);
+	if (NULL != f)
+	{
+		int size;
+		fseek(f, 0, SEEK_END);
+		size = ftell(f);
+		if (0 == size)
+		{
+			printf("file is empty\n");
+		}
 
+		else
+		{
+			if (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF)
+			{
+				while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF)
+				{
+					printf("\n%s", name1);
+					printf("\n%s", name2);
+				}
+			}
+		}
+	}
+	else
+	{
+		char fileyn;
+		printf("\n\n## ERROR : FILE NOT FOUND \nCreate File? y/n  ");
+	tag1:
+		scanf("%c", &fileyn);
+		if ((int)fileyn == (int)'y' || (int)fileyn == (int)'Y')
+		{
+			fclose(f);
+			f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "a");
+			fclose(f);
+			printf("\n--Add new Elements now?y/n  ");
+		tag2:
+			scanf("%c", &fileyn);
+			if ((int)fileyn == (int)'y' || (int)fileyn == (int)'Y')
+			{
+				addObject(f);
+			}
+			else if ((int)fileyn == (int)'n' || (int)fileyn == (int)'N')
+			{
+				printf("\nFile not Created-----------------------");
+			}
+			else
+			{
+				printf("\nEnter Valid Input :(y/n) ");
+				goto tag2;
+			}
+		}
+		else if ((int)fileyn == (int)'n' || (int)fileyn == (int)'N')
+		{
+			printf("File Not Created");
+		}
+		else
+		{
+			printf("\nEnter Valid Input :(y/n) ");
+			goto tag1;
+		}
+	}
+
+
+	fclose(f);
+	return f;
+
+}
+
+
+void addObject(FILE *f)
+{
+	struct Object O;
+	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "a");
+	printf("\nAdd Item Contains:---------------------------------");
+	printf("\n\n Enter Name                 :  ");
+	scanf("%s", &O.oname);
+	printf("Enter year of release (ddmmyyyy):  ");
+	scanf("%d", &O.year_of_realse);
+	fprintf(f, "\n%s,%d", O.oname, O.year_of_realse);
+	fclose(f);
 }
