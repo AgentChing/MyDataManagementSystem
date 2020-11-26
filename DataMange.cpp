@@ -1,34 +1,37 @@
 
 #include<iostream>
 #include<cstring>
-
+#include<fstream>
 using namespace std;
 int menu();
+typedef struct Character
+{
+	string name;
+	string actor;
+
+}Character;
+typedef struct Cast {
+	string name;
+	string voiced;
+}Cast;
 typedef struct Object
 {
 	char oname[70];
 	string genre[10]; int genrecount;
-	struct Character *character; int charcount;
-	struct Cast *cast; int castcount;
+    Character character; int charcount;
+	Cast cast; int castcount;
 	int rating;
 	int year_of_realse;
 	string discription;
 }Object;
 
-typedef struct Character
-{
-	char name[30];
-	char actor[30];
 
-}Character;
 
-typedef struct Cast {
-	char name[30];
-	char voiced[30];
-}Cast;
+
 void create_new_database(Object *arr , int *count)
-
 {
+    ofstream fout;
+	fout.open("My_data_base.txt",ios::app);
     int i= *count;
     cout<<"Enter the movie name:"<<endl;
     cin>>arr[i].oname;
@@ -49,11 +52,20 @@ void create_new_database(Object *arr , int *count)
 
     cout<<"Enter the Ratings on a scale of 10"<<endl;
     cin>>arr[i].rating;
+    fout<<arr[i].rating<<", ";
+    cout<<"Enter the character name and actor"<<endl;
+    cin>>arr[i].character.name>>arr[i].character.actor;
+    fout<<arr[i].character.name<<", "<<arr[i].character.actor<<", ";
+    cout<<"Enter the cast name and actor"<<endl;
+    cin>>arr[i].cast.name>>arr[i].cast.voiced;
+    fout<<arr[i].cast.name<<", "<<arr[i].cast.voiced<<", ";
     cout<<"Enter the year of release"<<endl;
     cin>>arr[i].year_of_realse;
+    fout<<arr[i].year_of_realse<<", ";
     cout<<"Enter the description"<<endl;
     cin>>arr[i].discription;
-
+    fout<<arr[i].discription;
+    fout<<endl;
 
     *count = ++i;
 
@@ -61,7 +73,7 @@ void create_new_database(Object *arr , int *count)
 
 int main()
 {
-	//openfile();
+
 	int choice;
 	Object arr[1000];
 	int c=0;
@@ -72,7 +84,7 @@ int main()
 		if(choice == 1)
 		{
 		create_new_database(arr,&c);
-    cout<<c<<endl;
+
 		}
 	} while (choice != 0);
 }
