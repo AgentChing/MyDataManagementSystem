@@ -16,7 +16,7 @@ typedef struct Cast {
 }Cast;
 typedef struct Object
 {
-	char oname[70];
+	string oname;
 	string genre[10]; int genrecount;
     Character character; int charcount;
 	Cast cast; int castcount;
@@ -34,41 +34,48 @@ void create_new_database(Object *arr , int *count)
 	fout.open("My_data_base.txt",ios::app);
     int i= *count;
     cout<<"Enter the movie name:"<<endl;
-    cin>>arr[i].oname;
-	cout<<"Enter the genre of the movie and enter 0 once finished!"<<endl;
-	string s="1";
+    cin.get();
+    getline(cin,arr[i].oname);
+    fout<<arr[i].oname<<", ";
+	cout<<"Enter the genre's of the movie :"<<endl;
+	string s;
 	int j=0;
-	while(s !="0")
+	getline(cin,s);
+	fout<<s<<", ";
+	char * s11= strtok((char*)s.c_str()," ");
+	j++;
+	while(s11)
     {
-
-        cin>>s;
-        if(s=="0")
-            break;
-        arr[i].genre[j++]=s;
-        j++;
-
+        s11=strtok(NULL," ");
+        j+=1;
     }
-    arr[i].genrecount=j;
+     arr[i].genrecount=j;
 
     cout<<"Enter the Ratings on a scale of 10"<<endl;
     cin>>arr[i].rating;
     fout<<arr[i].rating<<", ";
     cout<<"Enter the character name and actor"<<endl;
-    cin>>arr[i].character.name>>arr[i].character.actor;
+    cin.get();
+    getline(cin,arr[i].character.name);
+    cin.get();
+    getline(cin,arr[i].character.actor);
+
     fout<<arr[i].character.name<<", "<<arr[i].character.actor<<", ";
     cout<<"Enter the cast name and actor"<<endl;
-    cin>>arr[i].cast.name>>arr[i].cast.voiced;
+    getline(cin,arr[i].cast.name);
+    getline(cin,arr[i].cast.voiced);
     fout<<arr[i].cast.name<<", "<<arr[i].cast.voiced<<", ";
     cout<<"Enter the year of release"<<endl;
     cin>>arr[i].year_of_realse;
     fout<<arr[i].year_of_realse<<", ";
     cout<<"Enter the description"<<endl;
-    cin>>arr[i].discription;
+    cin.get();
+    getline(cin,arr[i].discription);
     fout<<arr[i].discription;
     fout<<endl;
 
     *count = ++i;
-
+    fout.close();
 };
 
 int main()
@@ -86,6 +93,22 @@ int main()
 		create_new_database(arr,&c);
 
 		}
+		if(choice == 2)
+        {   ifstream fin;
+     fin.open("My_data_base.txt");
+            string snew;
+            while(fin)
+            {
+                getline(fin,snew);
+                char * nnew=strtok((char*)snew.c_str(),",");
+                cout<<nnew<<endl;
+
+
+            }
+            fin.close();
+            cout<<"----------------------------------------------------------------------------------------------"<<endl;
+
+        }
 	} while (choice != 0);
 }
 
@@ -97,8 +120,9 @@ int menu()
 
 	cout<<"\n---------------MENU-----------------"<<endl;
 	 cout<<"\nTo ADD New Item enter:   1"<<endl;
-	cout<<"\nTo SEARCH an Item enter: 2"<<endl;
-	cout<<"\nTo DELETE an Item enter: 3"<<endl;
+	 cout<<"\nTo to view all the movies 2"<<endl;
+	cout<<"\nTo SEARCH an Movie's info enter: 3"<<endl;
+	cout<<"\nTo DELETE an Item enter: 4"<<endl;
 	 cout<<"\nTo Exit : Enter  0\n"<<endl;
 	cout<<"\n|\n Your response : "<<endl;
 	cin>>choice;
