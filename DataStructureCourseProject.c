@@ -7,7 +7,7 @@ FILE * openfile();
 void addObject();
 void initiate_Olist();
 int countcommas(char*);
-
+void stringpejadoo(char*,int);
 
 typedef struct Olist {
 	struct Object *olist;
@@ -192,7 +192,13 @@ void addObject(FILE *f)
 	O.castcount = countcommas(cast);
 	printf("Description                        :  ");
 	gets(description);
-	fprintf(f, "\n%s ,%d,%f,%d, %s ,%d, %s ,%d, %s , %s \n", O.oname, O.year_of_realse, O.rating, O.genrecount, genre, O.charcount, characters, O.castcount, cast, description);
+	fprintf(f, "\n%s\n", O.oname);
+    fprintf(f, "%d,%f\n", O.year_of_realse, O.rating);
+    fprintf(f, "%d,%s\n", O.genrecount, genre);
+    fprintf(f, "%d,%s\n",O.charcount, characters);
+    fprintf(f, "%d,%s\n", O.castcount, cast);
+    fprintf(f, "%s", description);
+
 
 
 	fclose(f);
