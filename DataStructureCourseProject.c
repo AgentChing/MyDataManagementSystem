@@ -6,6 +6,8 @@ int menu();
 FILE * openfile();
 void addObject();
 void initiate_Olist();
+int countcommas(char*);
+
 
 typedef struct Olist {
 	struct Object *olist;
@@ -14,11 +16,12 @@ typedef struct Olist {
 
 typedef struct Object
 {
+
 	char oname[70];
 	char genre[10][15]; int genrecount;
 	struct Character *character; int charcount;
 	struct Cast *cast; int castcount;
-	int rating;
+	float rating;
 	int year_of_realse;
 	char discription[200];
 }Object;
@@ -148,16 +151,51 @@ FILE * openfile()
 
 }
 
+int countcommas(char *c)
+{
+	int i = 0, count = 0;
+	while (c[i] != '\0')
+	{
+		if (c[i] == '|')
+			count += 1;
+		i += 1;
+	}
+	return count + 1;
+}
+
 
 void addObject(FILE *f)
 {
 	struct Object O;
+	fflush(stdin);
+	char genre[50], characters[500], cast[500], description[500];
 	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "a");
 	printf("\nAdd Item Contains:---------------------------------");
-	printf("\n\n Enter Name                 :  ");
-	scanf("%s", &O.oname);
-	printf("Enter year of release (ddmmyyyy):  ");
+	printf("\n\n Enter Name                    :  ");
+	gets(O.oname);
+	fflush(stdin);
+	printf("Enter year of release (ddmmyyyy)   :  ");
 	scanf("%d", &O.year_of_realse);
-	fprintf(f, "\n%s,%d", O.oname, O.year_of_realse);
+	fflush(stdin);
+	printf("Rating (out of 10)                 :  ");
+	scanf("%f", &O.rating);
+	fflush(stdin);
+	printf("Enter Genres separated by '|'      :  ");
+	scanf("%s", genre);
+	fflush(stdin);
+	O.genrecount = countcommas(genre);
+	printf("Enter Characters separated by '|'  :  ");
+	scanf("%s", characters);
+	fflush(stdin);
+	O.charcount = countcommas(characters);
+	printf("Enter Cast separated by '|'        :  ");
+	scanf("%s", cast);
+	fflush(stdin);
+	O.castcount = countcommas(cast);
+	printf("Description                        :  ");
+	gets(description);
+	fprintf(f, "\n%s ,%d,%f,%d, %s ,%d, %s ,%d, %s , %s \n", O.oname, O.year_of_realse, O.rating, O.genrecount, genre, O.charcount, characters, O.castcount, cast, description);
+
+
 	fclose(f);
 }
