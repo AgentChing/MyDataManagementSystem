@@ -162,8 +162,6 @@ int countcommas(char *c)
 	}
 	return count + 1;
 }
-
-
 void addObject(FILE *f)
 {
 	struct Object O;
