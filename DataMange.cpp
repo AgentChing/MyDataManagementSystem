@@ -31,6 +31,8 @@ typedef struct Object
 void create_new_database(Object *arr , int *count)
 {
     ofstream fout;
+    ofstream fout1;
+    fout1.open("Character.txt",ios::app);
 	fout.open("My_data_base.txt",ios::app);
     int i= *count;
     cout<<"Enter the movie name  :"<<endl;
@@ -53,16 +55,30 @@ void create_new_database(Object *arr , int *count)
 
     cout<<"Enter the Ratings on a scale of 10  :"<<endl;
     cin>>arr[i].rating;
+    while(arr[i].rating >10)
+    {
+        cout<<"Please enter less than 10! "<<endl;
+        cin>>arr[i].rating;
+    }
+
     fout<<arr[i].rating<<"|";
     cout<<"Enter all the character name separated by a comma  :"<<endl;
-    cin.get();
+    //cin.get();
     cin.get();
     getline(cin,arr[i].character.name);
+    fout<<arr[i].character.name<<"|";
+    char *nnew= strtok((char*)(arr[i].character.name).c_str(),",");
+    fout1<<nnew<<","<<arr[i].oname<<","<<endl;
+    while(nnew)
+    {
+        nnew= strtok(NULL,",");
+        fout1<<nnew<<","<<arr[i].oname<<","<<endl;
+    }
     cout<<"Enter all the character actor separated by a comma  :"<<endl;
     cin.get();
     getline(cin,arr[i].character.actor);
 
-    fout<<arr[i].character.name<<"|"<<arr[i].character.actor<<"|";
+    fout<<arr[i].character.actor<<"|";
     cout<<"Enter all the cast name separated by a comma  :"<<endl;
     getline(cin,arr[i].cast.name);
     cout<<"Enter all the cast voiced actor separated by a comma  :"<<endl;
@@ -79,6 +95,7 @@ void create_new_database(Object *arr , int *count)
 
     *count = ++i;
     fout.close();
+    fout1.close();
 };
 
 int main()
@@ -168,6 +185,49 @@ int main()
 
 
         }
+        if(choice == 4)
+        {
+        ifstream fin1;
+        string movies[10000];
+            int mov=0;
+        fin1.open("Character.txt");
+        string schar;
+        string line1;
+        cout<<"Enter the character name :";
+        cin.get();
+        getline(cin,schar);
+        while(fin1)
+       {
+            getline(fin1,line1);
+            if(line1=="")
+                break;
+            char * nnew= strtok((char*)line1.c_str(),",");
+
+            if(nnew == schar)
+            {
+                   nnew= strtok(NULL,",");
+                  // cout<<nnew<<endl;
+
+                    movies[mov++] = string(nnew);
+              }
+
+
+            }
+            sort(movies,movies+mov);
+            if(mov==0)
+            {
+                cout<<"No movie available"<<endl;
+            }
+            else{
+                 cout<<"The movies are :"<<endl;
+            for(int mov1=0;mov1< mov; mov1++)
+                cout<<movies[mov1]<<endl;
+            }
+
+
+        fin1.close();
+             cout<<"---------------------------------------------------------------------------------------------------------------------"<<endl;
+        }
 	} while (choice != 0);
 }
 
@@ -181,7 +241,8 @@ int menu()
 	 cout<<"\nTo ADD New Item enter:   1"<<endl;
 	 cout<<"\nTo to view all the movies 2"<<endl;
 	cout<<"\nTo SEARCH an Movie's info enter: 3"<<endl;
-	cout<<"\nTo DELETE an Item enter: 4"<<endl;
+	cout<<"\nTo SEARCH all the Movies by character names: 4"<<endl;
+	cout<<"\nTo DELETE an Item enter: 5"<<endl;
 	 cout<<"\nTo Exit : Enter  0\n"<<endl;
 	cout<<"\n|\n Your response : "<<endl;
 	cin>>choice;
