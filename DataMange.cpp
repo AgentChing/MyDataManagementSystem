@@ -1,6 +1,6 @@
-
 #include<iostream>
 #include<cstring>
+#include<algorithm>
 #include<fstream>
 using namespace std;
 int menu();
@@ -33,15 +33,15 @@ void create_new_database(Object *arr , int *count)
     ofstream fout;
 	fout.open("My_data_base.txt",ios::app);
     int i= *count;
-    cout<<"Enter the movie name:"<<endl;
+    cout<<"Enter the movie name  :"<<endl;
     cin.get();
     getline(cin,arr[i].oname);
-    fout<<arr[i].oname<<", ";
-	cout<<"Enter the genre's of the movie :"<<endl;
+    fout<<arr[i].oname<<"|";
+	cout<<"Enter the genre's of the movie  :"<<endl;
 	string s;
 	int j=0;
 	getline(cin,s);
-	fout<<s<<", ";
+	fout<<s<<"|";
 	char * s11= strtok((char*)s.c_str()," ");
 	j++;
 	while(s11)
@@ -51,24 +51,27 @@ void create_new_database(Object *arr , int *count)
     }
      arr[i].genrecount=j;
 
-    cout<<"Enter the Ratings on a scale of 10"<<endl;
+    cout<<"Enter the Ratings on a scale of 10  :"<<endl;
     cin>>arr[i].rating;
-    fout<<arr[i].rating<<", ";
-    cout<<"Enter the character name and actor"<<endl;
+    fout<<arr[i].rating<<"|";
+    cout<<"Enter all the character name separated by a comma  :"<<endl;
+    cin.get();
     cin.get();
     getline(cin,arr[i].character.name);
+    cout<<"Enter all the character actor separated by a comma  :"<<endl;
     cin.get();
     getline(cin,arr[i].character.actor);
 
-    fout<<arr[i].character.name<<", "<<arr[i].character.actor<<", ";
-    cout<<"Enter the cast name and actor"<<endl;
+    fout<<arr[i].character.name<<"|"<<arr[i].character.actor<<"|";
+    cout<<"Enter all the cast name separated by a comma  :"<<endl;
     getline(cin,arr[i].cast.name);
+    cout<<"Enter all the cast voiced actor separated by a comma  :"<<endl;
     getline(cin,arr[i].cast.voiced);
-    fout<<arr[i].cast.name<<", "<<arr[i].cast.voiced<<", ";
-    cout<<"Enter the year of release"<<endl;
+    fout<<arr[i].cast.name<<"|"<<arr[i].cast.voiced<<"|";
+    cout<<"Enter the year of release  :"<<endl;
     cin>>arr[i].year_of_realse;
-    fout<<arr[i].year_of_realse<<", ";
-    cout<<"Enter the description"<<endl;
+    fout<<arr[i].year_of_realse<<"|";
+    cout<<"Enter the description  :"<<endl;
     cin.get();
     getline(cin,arr[i].discription);
     fout<<arr[i].discription;
@@ -95,18 +98,74 @@ int main()
 		}
 		if(choice == 2)
         {   ifstream fin;
-     fin.open("My_data_base.txt");
+            string movies[10000];
+            int mov=0;
+            fin.open("My_data_base.txt");
             string snew;
             while(fin)
             {
                 getline(fin,snew);
-                char * nnew=strtok((char*)snew.c_str(),",");
-                cout<<nnew<<endl;
-
-
-            }
+                if(snew=="")
+                    break;
+                char * nnew = strtok((char*)snew.c_str(), "|");
+                movies[mov++] = string(nnew);
+                }
+            sort(movies,movies+mov);
+            for(int mov1=0;mov1< mov; mov1++)
+                cout<<movies[mov1]<<endl;
             fin.close();
             cout<<"----------------------------------------------------------------------------------------------"<<endl;
+
+        }
+        if(choice == 3)
+        {
+
+            int key=9;
+            string data[]={"Name of the movie: ","The genre's of the movie: ","Rating: ","All the character names: ","All the character actors: ","All the cast names: ","All the cast voiced: ","Release Date :","Description: "};
+            string sname;
+            cout<<"Enter the name of the movie you want to search for  :";
+            cin.get();
+            getline(cin,sname);
+            //cout<<sname<<endl;
+            ifstream fin;
+
+            int c=0;
+            fin.open("My_data_base.txt");
+            string snew;
+            while(fin)
+            {
+                getline(fin,snew);
+                if(snew=="")
+                {  c=1;
+                   break;
+                }
+
+                char * nnew = strtok((char*)snew.c_str(), "|");
+
+                if(nnew == sname)
+                {   cout<<data[9-key]<<nnew<<endl;
+                    key--;
+                    while(key>0)
+                    {
+                        nnew= strtok(NULL, "|");
+                        cout<<data[9-key]<<nnew<<endl;
+                        key--;
+                    }
+
+
+                   break;
+                }
+                }
+
+            fin.close();
+
+           if(c==1)
+            cout<<"The movie you're looking for is currently unavailable"<<endl;
+
+            cout<<"----------------------------------------------------------------------------------------------"<<endl;
+
+
+
 
         }
 	} while (choice != 0);
@@ -136,18 +195,3 @@ int menu()
 	return choice;
 
 }
-
-
-
-// void openfile()
-// {
-// 	FILE *f;
-// 	char name1[50], name2[50];
-// 	f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt", "r");
-// 	while (fscanf(f, "%s%*c%s\n", &name1, &name2) != EOF) {
-// 		printf("\n%s", name1);
-// 		printf("\n%s", name2);
-// 	}
-// 	fclose(f);
-
-// }
