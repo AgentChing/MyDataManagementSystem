@@ -1,11 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<ctype.h>
 
 void checkfile(FILE *);
 int menu(FILE *);
 void additem(FILE *);
-
+void readitems(FILE *,int);
+int readmenu();
+int searchmenu();
+void searchitem(FILE*, int);
 
 
 typedef struct Object
@@ -22,6 +26,29 @@ typedef struct Object
     char actors[20][30];
 
 }Object;
+
+void printobject(struct Object O)
+{
+    printf("\n----__%s__---",O.name);printf("\n |");
+    int day=O.releaseyear/1000000, month = (O.releaseyear%1000000)/10000, year = O.releaseyear%10000;
+    printf("\n---Rating = %0.2f/10   | Year of Release = %d//%d//%d    | Episode Count = %d    | Status = ",O.rating,day,month,year,O.episodecount);
+    switch(O.status)
+    {
+        case 1:{printf("To Watch");break;}
+        case 2:{printf("Watched");break;}
+        case 3:{printf("watching");break;}
+    }
+    printf("\n |");
+    printf("\n--GENRE : ");
+    for(int i=0;i<O.genrecount;i++)
+        printf("%s, ",O.genre[i]);
+    printf("\n |");
+    printf("\n--CHARACTERS : ");
+    for(int i=0;i<O.charcount;i++)
+        printf("\n\tCharcter:    name : %s ::      actor : %s",O.characters[i],O.actors[i]);
+        printf("\n");
+
+}
 
 void main()
 {
@@ -42,6 +69,30 @@ void getstring(char str[])
     {
         if(str[i]==' ')
             str[i]='_';
+    }
+}
+
+void ungetstring(char str[],int mode)
+{
+    int a=strlen(str);
+    switch(mode)
+    {
+        case 1:{
+        for(int i=0;i<a;i++)
+            {
+                if(str[i]=='_')
+                    str[i]=' ';
+            }
+        break;
+    }
+        case -1:{
+        for(int i=0;i<a;i++)
+            {
+                if(str[i]==' ')
+                    str[i]='_';
+            }
+        }
+        break;
     }
 }
 
@@ -92,7 +143,7 @@ int menu(FILE *f)
 	{
 	    case 0:break;
         case 1:{additem(f);break;}
-        case 2:{printf("\nSEARCH");break;}
+        case 2:{int z = searchmenu(); searchitem(f,z);break;}
         case 3:{printf("\nDELETE");break;}
         case 4:{int z = readmenu();readitems(f,z);break;}
 	}
@@ -183,6 +234,7 @@ void readitems(FILE *f,int mode)
                 case 3:{printf("Watching");break;}
             }
             z+=1;
+            break;
           }
           case 3:{
               int year=O.releaseyear%10000,month=(O.releaseyear/10000)%100,day=O.releaseyear/1000000;
@@ -192,6 +244,7 @@ void readitems(FILE *f,int mode)
                 printf("%s, ",O.genre[i]);
             }
             z+=1;
+            break;
           }
       }
     }
@@ -211,7 +264,62 @@ int readmenu()
     return a;
 }
 
+int searchmenu()
+{
+    int c;
+    printf("\nSearch By : ");
+    printf("\n--1. NAME");
+    printf("\n--2. CHARACTER");
+    printf("\n------------Your Response :_");
+    scanf("%d",&c);
+    return c;
+}
 
+void searchitem(FILE *f,int mode)
+{
+    f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt","r");
+    struct Object O;
+    char str[50];
+        printf("\nEnter Name : ");
+        fflush(stdin);
+        gets(str);
+    while(fscanf(f,"%s %d %d %d %f %d",O.name,&O.episodecount,&O.status,&O.releaseyear,&O.rating,&O.genrecount) != EOF)
+    {
+       for(int i=0;i<O.genrecount;i++)
+        {
+            fscanf(f,"%s",O.genre[i]);
+        }
+        fscanf(f,"%d",&O.charcount);
+        for(int i=0;i<O.charcount;i++)
+        {
+            fscanf(f,"%s",O.characters[i]);
+            fscanf(f,"%s",O.actors[i]);
+        }
+        int z=1;
+      switch(mode)
+      {
+          case 1:{
+            if(strcmp(O.name,str)==0)
+                printobject(O);
+                printf("\n");
+            break;
+          }
+          case 2:{
+            for(int i=0;i<O.charcount;i++)
+            {
+                if(strcmp(O.characters[i],str)==0)
+                printobject(O);
+                printf("\n");
+                break;
+            }
+            break;
+          }
+      }
+      z+=1;
+    }
 
+    printf("\n---------------------------------------------------------\n");
+    fclose(f);
 
+}
 
