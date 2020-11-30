@@ -282,7 +282,7 @@ void searchitem(FILE *f,int mode)
     char str[50];
         printf("\nEnter Name : ");
         fflush(stdin);
-        gets(str);
+        getstring(str);
     while(fscanf(f,"%s %d %d %d %f %d",O.name,&O.episodecount,&O.status,&O.releaseyear,&O.rating,&O.genrecount) != EOF)
     {
        for(int i=0;i<O.genrecount;i++)
@@ -308,9 +308,9 @@ void searchitem(FILE *f,int mode)
             for(int i=0;i<O.charcount;i++)
             {
                 if(strcmp(O.characters[i],str)==0)
-                printobject(O);
+                {printobject(O);
                 printf("\n");
-                break;
+                break;}
             }
             break;
           }
