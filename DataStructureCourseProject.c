@@ -269,7 +269,11 @@ int searchmenu()
     int c;
     printf("\nSearch By : ");
     printf("\n--1. NAME");
-    printf("\n--2. CHARACTER");
+    printf("\n--2. CHARACTER NAME");
+    printf("\n--3. RATING");
+    printf("\n--4. ACTOR NAME");
+    printf("\n--5. GENRE");
+    printf("\n--6. STATUS");
     printf("\n------------Your Response :_");
     scanf("%d",&c);
     return c;
@@ -279,10 +283,17 @@ void searchitem(FILE *f,int mode)
 {
     f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt","r");
     struct Object O;
-    char str[50];
-        printf("\nEnter Name : ");
+    char str[50],c;
+    float rate;
         fflush(stdin);
-        getstring(str);
+    switch(mode)
+    {
+        case 1:{printf("\nEnter Name : ");
+              getstring(str);break;}
+        case 2:{printf("\nEnter Character Name : ");getstring(str);break;}
+        case 3:{printf("\nEnter 'mode' Ratingvalue ( > 9 or = 8 or < 5 ) : ");
+                scanf("%c %f",&c,&rate);break;}
+    }
     while(fscanf(f,"%s %d %d %d %f %d",O.name,&O.episodecount,&O.status,&O.releaseyear,&O.rating,&O.genrecount) != EOF)
     {
        for(int i=0;i<O.genrecount;i++)
@@ -314,6 +325,45 @@ void searchitem(FILE *f,int mode)
             }
             break;
           }
+          case 3:{
+             tg3:
+             if(c == '>')
+             {
+                 if(O.rating>rate)
+                 {printobject(O);
+                printf("\n");
+                break;}
+             }
+             else if(c == '<')
+             {
+                 if(O.rating<rate)
+                 {printobject(O);
+                printf("\n");
+                break;}
+
+             }
+             else if(c == '=')
+             {
+              if(O.rating==rate)
+                 {printobject(O);
+                printf("\n");
+                break;}
+             }
+             else if(c == 'e')
+             {
+                 break;
+             }
+             else {
+                printf("\nERROR: invalid input format\nvalid format :=\n");
+                printf("\t\t > (your value)\n\t\t < (your value)\n\t\t = (your value)\n\t\t enter e to exit :  Your Response : ");
+                scanf("%c %f",&c,&rate);
+                goto tg3;fflush(stdin);
+             }
+          }
+          case 4:{
+
+          }
+
       }
       z+=1;
     }
