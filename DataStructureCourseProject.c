@@ -284,8 +284,9 @@ void searchitem(FILE *f,int mode)
     f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt","r");
     struct Object O;
     char str[50],c;
+    int k;
     float rate;
-        fflush(stdin);
+    fflush(stdin);
     switch(mode)
     {
         case 1:{printf("\nEnter Name : ");
@@ -293,6 +294,11 @@ void searchitem(FILE *f,int mode)
         case 2:{printf("\nEnter Character Name : ");getstring(str);break;}
         case 3:{printf("\nEnter 'mode' Ratingvalue ( > 9 or = 8 or < 5 ) : ");
                 scanf("%c %f",&c,&rate);break;}
+        case 4:{printf("\nEnter Actor Name : ");getstring(str);break;}
+        case 5:{printf("\nEnter Genre : ");getstring(str);break;}
+        case 6:{printf("\nEnter status number-\n\t\t1. To Watch\n\t\t2. Watched\n\t\t3. Watching");
+                printf("\n\t\t\tyour response:_");
+                scanf("%d",&k);break;}
     }
     while(fscanf(f,"%s %d %d %d %f %d",O.name,&O.episodecount,&O.status,&O.releaseyear,&O.rating,&O.genrecount) != EOF)
     {
@@ -361,7 +367,26 @@ void searchitem(FILE *f,int mode)
              }
           }
           case 4:{
-
+              for(int i=0;i<O.charcount;i++)
+            {
+                if(strcmp(O.actors[i],str)==0)
+                {printobject(O);
+                printf("\n");
+                break;}
+            }
+            break;
+          }
+          case 5:{
+          if(strcmp(O.genre,str)==0)
+                printobject(O);
+                printf("\n");
+            break;
+          }
+          case 6:{
+          if(O.status==k)
+                printobject(O);
+                printf("\n");
+            break;
           }
 
       }
