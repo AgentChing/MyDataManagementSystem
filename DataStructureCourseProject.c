@@ -29,7 +29,7 @@ typedef struct Object
 
 void printobject(struct Object O)
 {
-    printf("\n----__%s__---",O.name);printf("\n |");
+    printf("\n%s :-",O.name);printf("\n |");
     int day=O.releaseyear/1000000, month = (O.releaseyear%1000000)/10000, year = O.releaseyear%10000;
     printf("\n---Rating = %0.2f/10   | Year of Release = %d//%d//%d    | Episode Count = %d    | Status = ",O.rating,day,month,year,O.episodecount);
     switch(O.status)
