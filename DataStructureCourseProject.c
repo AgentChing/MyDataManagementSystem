@@ -377,9 +377,13 @@ void searchitem(FILE *f,int mode)
             break;
           }
           case 5:{
-          if(strcmp(O.genre,str)==0)
-                printobject(O);
+          for(int i=0;i<O.genrecount;i++)
+            {
+                if(strcmp(O.genre[i],str)==0)
+                {printobject(O);
                 printf("\n");
+                break;}
+            }
             break;
           }
           case 6:{
