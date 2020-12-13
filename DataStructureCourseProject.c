@@ -6,7 +6,7 @@
 void checkfile(FILE *);
 int menu(FILE *);
 void additem(FILE *);
-void readitems(FILE *,int);
+void readitems(FILE *,int,int);
 int readmenu();
 int searchmenu();
 void searchitem(FILE*, int);
@@ -118,7 +118,7 @@ void checkfile(FILE *f)
         }
         else
         {
-            printf("\nEnter A Valid Input---");
+            printf("\nEnter A Valid Input you Dumbass---");
             goto t1;
         }
     }
@@ -133,10 +133,12 @@ int menu(FILE *f)
 {
     int choice;
     printf("\n---------------MENU-----------------");
-	printf("\nTo ADD New Item enter:   1");
-	printf("\nTo SEARCH an Item enter: 2");
-	printf("\nTo DELETE an Item enter: 3");
-	printf("\nTo SEE all Items enter : 4");
+	printf("\nTo ADD New Item enter   : 1");
+	printf("\nTo SEARCH an Item enter : 2");
+	printf("\nTo ADD To Favorites     : 3");
+	printf("\nTo SEE all Items enter  : 4");
+	printf("\nTo View Favorites       : 5");
+
 	printf("\nTo Exit : Enter  0\n");
 	printf("\n|\n Your response : "); scanf("%d", &choice);
 	switch(choice)
@@ -144,8 +146,9 @@ int menu(FILE *f)
 	    case 0:break;
         case 1:{additem(f);break;}
         case 2:{int z = searchmenu(); searchitem(f,z);break;}
-        case 3:{printf("\nDELETE");break;}
-        case 4:{int z = readmenu();readitems(f,z);break;}
+        case 3:{addFav(f);break;}
+        case 4:{int z = readmenu();readitems(f,z,0);break;}
+        case 5:{int z = readmenu();readitems(f,z,1);;break;}
 	}
 
 	return choice;
@@ -201,9 +204,14 @@ void additem(FILE *f)
     fclose(f);
 }
 
-void readitems(FILE *f,int mode)
+void readitems(FILE *f,int mode,int mode2)
 {
-    f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt","r");
+    switch(mode2)
+    {
+    case 0:{ f = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt","r");break;}
+    case 1:{ f = fopen("C:\\Users\\HP\\Desktop\\FAVDatabase.txt","r");break;}
+    }
+
     struct Object O;
     printf("---------------------------------------------------------\n");
     int z=1;
@@ -252,8 +260,6 @@ void readitems(FILE *f,int mode)
     printf("\n---------------------------------------------------------\n");
     fclose(f);
     }
-
-
 
 int readmenu()
 {
@@ -402,3 +408,52 @@ void searchitem(FILE *f,int mode)
 
 }
 
+void addFav(FILE *f2)
+{
+    FILE *f;
+    f = fopen("C:\\Users\\HP\\Desktop\\FAVDatabase.txt","a");
+    f2 = fopen("C:\\Users\\HP\\Desktop\\animedatabase.txt","r");
+    struct Object O;
+    char str[50];
+    printf("\nEnter Name : ");
+    getstring(str);
+    int mode =1;
+
+     while(fscanf(f2,"%s %d %d %d %f %d",O.name,&O.episodecount,&O.status,&O.releaseyear,&O.rating,&O.genrecount) != EOF)
+    {
+       for(int i=0;i<O.genrecount;i++)
+        {
+            fscanf(f2,"%s",O.genre[i]);
+        }
+        fscanf(f2,"%d",&O.charcount);
+        for(int i=0;i<O.charcount;i++)
+        {
+            fscanf(f2,"%s",O.characters[i]);
+            fscanf(f2,"%s",O.actors[i]);
+        }
+        int z=1;
+      switch(mode)
+      {
+          case 1:{
+            if(strcmp(O.name,str)==0)
+                {fprintf(f,"\n%s %d %d %d %f %d ",O.name,O.episodecount,O.status,O.releaseyear,O.rating,O.genrecount);
+                    for(int i=0;i<O.genrecount;i++)
+                    {
+                        fprintf(f,"%s ",O.genre[i]);
+                    }
+                    fprintf(f,"%d ",O.charcount);
+                    for(int i=0;i<O.charcount;i++)
+                    {
+                        fprintf(f,"%s ",O.characters[i]);
+                        fprintf(f,"%s ",O.actors[i]);
+                    }
+                }
+            break;
+          }
+
+    }
+    z+=1;
+    }
+fclose(f2);
+fclose(f);
+}
